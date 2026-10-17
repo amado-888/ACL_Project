@@ -1,0 +1,26 @@
+\contentsline {section}{\numberline {1}Task, Data and Prediction Cutoff}{3}{section.1}%
+\contentsline {section}{\numberline {2}Data Audit and Cleaning}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Sentinel audit (before cleaning)}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Sentinels and semantic typing}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Qualifying coverage and the pace feature}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Primary and foreign keys}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Grain: one row per (raceId, driverId)}{6}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Data-Engineering Questions}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Q1. Which circuits convert a front-row start into a podium most often, and does the ranking change after 2014?}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Q2. Do drivers podium more often at home, after controlling for starting position?}{8}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Q3. Which constructors have the highest mechanical-retirement rate in 2014--2021 vs.\ 2022--2024?}{8}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Modeling Table and Selected Features}{10}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Selected features and why each is valid at the pre-race cutoff}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Preprocessing}{10}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Chronological split}{11}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Models and Results}{12}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Models}{12}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Metric choice}{12}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Model comparison}{12}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Additional modeling attempt: era-restricted training (2006+)}{13}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Feature-Group Ablation}{14}{section.6}%
+\contentsline {section}{\numberline {7}Model Explainability (XAI)}{15}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Global: permutation importance}{15}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Global: SHAP}{15}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Local: SHAP waterfalls and LIME}{16}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Known Limitations}{18}{section.8}%

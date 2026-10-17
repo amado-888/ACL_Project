@@ -1,0 +1,74 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Task, Data and Prediction Cutoff}{3}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Data Audit and Cleaning}{4}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Sentinel audit (before cleaning)}{4}{subsection.2.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Missing and sentinel (\texttt  {\textbackslash N}) values per column, before cleaning.}}{4}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:sentinel}{{1}{4}{Missing and sentinel (\texttt {\textbackslash N}) values per column, before cleaning}{figure.caption.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Sentinels and semantic typing}{4}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Qualifying coverage and the pace feature}{5}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:quali}{{2.3}{5}{Qualifying coverage and the pace feature}{subsection.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Qualifying-session missingness by season. The single-session era (1994--2005) has no Q2/Q3 by design.}}{5}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:qmiss}{{2}{5}{Qualifying-session missingness by season. The single-session era (1994--2005) has no Q2/Q3 by design}{figure.caption.2}{}}
+\newlabel{fig:qelim}{{3a}{5}{Knockout era: session coverage by position. Missing means eliminated}{figure.caption.3}{}}
+\newlabel{sub@fig:qelim}{{a}{5}{Knockout era: session coverage by position. Missing means eliminated}{figure.caption.3}{}}
+\newlabel{fig:qout}{{3b}{5}{Log-scale \ft {gap\_to\_pole\_pct}; no lap exceeds the 100\% threshold}{figure.caption.3}{}}
+\newlabel{sub@fig:qout}{{b}{5}{Log-scale \ft {gap\_to\_pole\_pct}; no lap exceeds the 100\% threshold}{figure.caption.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Evidence for how missing qualifying data and outliers are handled.}}{5}{figure.caption.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Primary and foreign keys}{5}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Grain: one row per (raceId, driverId)}{6}{subsection.2.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Left: shared-drive duplicates per season. Right: status of the rows kept and dropped by the duplicate rule.}}{6}{figure.caption.4}\protected@file@percent }
+\newlabel{fig:dups}{{4}{6}{Left: shared-drive duplicates per season. Right: status of the rows kept and dropped by the duplicate rule}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data-Engineering Questions}{7}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Q1. Which circuits convert a front-row start into a podium most often, and does the ranking change after 2014?}{7}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Front-row-to-podium conversion rate per Grand Prix, pre-2014 vs.\ hybrid era (2014+), sorted by hybrid-era rate.}}{7}{figure.caption.5}\protected@file@percent }
+\newlabel{fig:q1}{{5}{7}{Front-row-to-podium conversion rate per Grand Prix, pre-2014 vs.\ hybrid era (2014+), sorted by hybrid-era rate}{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Q2. Do drivers podium more often at home, after controlling for starting position?}{8}{subsection.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Podium probability at home vs.\ away, within grid tiers.}}{8}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:q2}{{6}{8}{Podium probability at home vs.\ away, within grid tiers}{figure.caption.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Q3. Which constructors have the highest mechanical-retirement rate in 2014--2021 vs.\ 2022--2024?}{8}{subsection.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Mechanical-retirement rate per constructor, 2014--2021 vs.\ 2022--2024.}}{9}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:q3}{{7}{9}{Mechanical-retirement rate per constructor, 2014--2021 vs.\ 2022--2024}{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Modeling Table and Selected Features}{10}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Selected features and why each is valid at the pre-race cutoff}{10}{subsection.4.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Selected features. $r$ = Pearson correlation with \texttt  {target\_podium} on the full modeling table (Figure~\ref {fig:corr}).}}{10}{table.caption.8}\protected@file@percent }
+\newlabel{tab:features}{{1}{10}{Selected features. $r$ = Pearson correlation with \ft {target\_podium} on the full modeling table (Figure~\ref {fig:corr})}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Preprocessing}{10}{subsection.4.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Correlation of each selected feature with the podium target.}}{11}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:corr}{{8}{11}{Correlation of each selected feature with the podium target}{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Chronological split}{11}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Models and Results}{12}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Models}{12}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Metric choice}{12}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Model comparison}{12}{subsection.5.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces All five metrics on validation and on the unseen test set (full-history training). Training-set scores: LR ROC/PR/F1 = 0.897/0.545/0.514; RF = 0.916/0.619/0.546.}}{12}{table.caption.10}\protected@file@percent }
+\newlabel{tab:models}{{2}{12}{All five metrics on validation and on the unseen test set (full-history training). Training-set scores: LR ROC/PR/F1 = 0.897/0.545/0.514; RF = 0.916/0.619/0.546}{table.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Test-set (2022--2024) performance of the three models.}}{13}{figure.caption.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Additional modeling attempt: era-restricted training (2006+)}{13}{subsection.5.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Test-set performance when training on 2006--2018 only.}}{13}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:era}{{10}{13}{Test-set performance when training on 2006--2018 only}{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Feature-Group Ablation}{14}{section.6}\protected@file@percent }
+\newlabel{sec:ablation}{{6}{14}{Feature-Group Ablation}{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Feature-group ablation (random forest, test PR-AUC).}}{14}{table.caption.13}\protected@file@percent }
+\newlabel{tab:abl}{{3}{14}{Feature-group ablation (random forest, test PR-AUC)}{table.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Drop in test PR-AUC when each feature group is removed.}}{14}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:abl}{{11}{14}{Drop in test PR-AUC when each feature group is removed}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Model Explainability (XAI)}{15}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Global: permutation importance}{15}{subsection.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Permutation importance: drop in test PR-AUC (95\% interval over 30 shuffles).}}{15}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:perm}{{12}{15}{Permutation importance: drop in test PR-AUC (95\% interval over 30 shuffles)}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Global: SHAP}{15}{subsection.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces SHAP beeswarm plots (percentage points of P(podium)). Each dot is one test row; colour is the feature value.}}{16}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:bee}{{13}{16}{SHAP beeswarm plots (percentage points of P(podium)). Each dot is one test row; colour is the feature value}{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces SHAP dependence of \texttt  {grid} (top) and \texttt  {gap\_to\_pole\_pct} (bottom); LR in log-odds, RF and NN in probability.}}{16}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:dep}{{14}{16}{SHAP dependence of \ft {grid} (top) and \ft {gap\_to\_pole\_pct} (bottom); LR in log-odds, RF and NN in probability}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Local: SHAP waterfalls and LIME}{16}{subsection.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Local SHAP waterfalls (LR in log-odds, RF and NN in probability). Top: record A. Bottom: record B. Columns: LR, RF, NN.}}{17}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:wf}{{15}{17}{Local SHAP waterfalls (LR in log-odds, RF and NN in probability). Top: record A. Bottom: record B. Columns: LR, RF, NN}{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces LIME explanations for records A (top) and B (bottom).}}{17}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:lime}{{16}{17}{LIME explanations for records A (top) and B (bottom)}{figure.caption.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Known Limitations}{18}{section.8}\protected@file@percent }
+\gdef \@abspage@last{18}

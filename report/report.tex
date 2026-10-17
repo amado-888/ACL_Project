@@ -37,14 +37,18 @@
 
 
 \title{\textbf{Formula 1 Podium Prediction}\\[4pt]\large Milestone 1 --- Analytical Report}
-\author{Team: \textit{[add team member names and IDs]}}
+\author{
+  \\ Abdelrahman Ashry, 58-0567
+  \\ Ahmed Hamdy, 58-7370
+  \\ Hisham Hani, 58-7992
+  \\ Ahmed Khalid, 58-1379}
 \date{October 2026}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We predict whether a driver will finish on the podium (\ft{positionOrder} $\leq 3$) using only information available after qualifying and before the race starts. We clean and audit the 14 relational Ergast tables (1950--2024) and build a leakage-safe modeling table with exactly one row per driver per race (26,668 rows, 12.7\% podiums). We answer three data-engineering questions with multi-hop joins, then train a logistic-regression baseline, a random forest and a shallow neural network on a chronological split. On the unseen 2022--2024 test set all three models reach ROC-AUC $\approx$ 0.92--0.93 and PR-AUC $\approx$ 0.65--0.67. The random forest has the best PR-AUC, our primary metric. Ablation and explainability (permutation importance, SHAP, LIME) show that every model is anchored on starting position, with championship form as the second signal. These explanations describe what the models rely on, \emph{not} what causes podium finishes.
+We predict whether a driver will finish on the podium (\ft{positionOrder} $\leq 3$) using only information available after qualifying and before the race starts. We clean and audit the 14 relational tables (1950--2024) and build a leakage-safe modeling table with exactly one row per driver per race (26,668 rows, 12.7\% podiums). We answer three data-engineering questions with multi-hop joins, then train a logistic-regression baseline, a random forest and a shallow neural network on a chronological split. On the unseen 2022--2024 test set all three models reach ROC-AUC $\approx$ 0.92--0.93 and PR-AUC $\approx$ 0.65--0.67. The random forest has the best PR-AUC, our primary metric. Ablation and explainability (permutation importance, SHAP, LIME) show that every model is anchored on starting position, with championship form as the second signal. These explanations describe what the models rely on, \emph{not} what causes podium finishes.
 \end{abstract}
 
 \tableofcontents
@@ -139,20 +143,23 @@ Primary keys of \ft{drivers}, \ft{constructors}, \ft{circuits}, \ft{races}, \ft{
 \section{Data-Engineering Questions}
 
 \subsection{Q1. Which circuits convert a front-row start into a podium most often, and does the ranking change after 2014?}
-\textbf{Method and joins.} \ft{results} (grid, outcome) $\bowtie$ \ft{races} (year, Grand Prix) $\bowtie$ \ft{qualifying} (qualifying position). The conversion rate is podiums divided by front-row starts, computed per Grand Prix and era: pre-2014 vs.\ the 2014+ hybrid era. Only Grands Prix with at least 10 front-row starts in \emph{both} eras are compared (17 events).
-
-\textbf{Grid vs.\ qualifying.} A front-row start is defined by \ft{grid} $\in\{1,2\}$, the actual starting slot after penalties, not by qualifying position. The two differ: in 36 front-row starts the driver had qualified 3rd or lower and was promoted by penalties to cars ahead.
-
-\textbf{Answer.} In the hybrid era the \textbf{Japanese GP (88.9\%)}, \textbf{Abu Dhabi GP (86.4\%)} and \textbf{Monaco GP (85.0\%)} convert front-row starts most often (Figure~\ref{fig:q1}). The ranking \textbf{does change substantially}:
+\textbf{Method and joins:} \ft{results} (grid, outcome) $\bowtie$ \ft{races} (year, Grand Prix) $\bowtie$ \ft{qualifying} (qualifying position). The conversion rate is podiums divided by front-row starts, computed per Grand Prix and era: pre-2014 vs.\ the 2014+ hybrid era. Only Grands Prix with at least 10 front-row starts in \emph{both} eras are compared (17 events).
+\\
+\\
+\textbf{Grid vs.\ qualifying:} A front-row start is defined by \ft{grid} $\in\{1,2\}$, the actual starting slot after penalties, not by qualifying position. The two differ: in 36 front-row starts the driver had qualified 3rd or lower and was promoted by penalties to cars ahead.
+\\
+\\
+\textbf{Answer:} In the hybrid era the \textbf{Japanese GP (88.9\%)}, \textbf{Abu Dhabi GP (86.4\%)} and \textbf{Monaco GP (85.0\%)} convert front-row starts most often (Figure~\ref{fig:q1}). The ranking \textbf{does change substantially}:
 \begin{itemize}
   \item The rank correlation between the two eras is essentially zero (Spearman $\rho = 0.02$, $p = 0.94$).
   \item Monaco moves from 16th to 3rd, and the Hungarian GP falls from 2nd (67.9\%) to last (59.1\%). Japan is the only Grand Prix ranked 1st in both eras.
   \item Conversion rose at 16 of the 17 Grands Prix, from a mean of 57.1\% to 76.7\% (Wilcoxon signed-rank $p < 0.001$). Front-row starts became much more reliable overall in the hybrid era.
 \end{itemize}
 
-\textbf{Grain, missing data and cutoff.} The grain is one row per driver per race, restricted to the two front-row starters. \ft{grid} comes from \ft{results} and is complete, so the gaps in the qualifying table (pre-1994 and single-session years) do not affect the rates. Qualifying position is used only to show the difference between grid and qualifying. Both \ft{grid} and qualifying are known before the race starts.
-
-\textbf{Caveat.} Hybrid-era rates rest on at most 22 front-row starts per Grand Prix (two per race, 2014--2024), so neighbouring ranks are within sampling noise. Grands Prix are grouped by event name, which can span more than one circuit layout over the decades.
+\textbf{Grain, missing data and cutoff:} The grain is one row per driver per race, restricted to the two front-row starters. \ft{grid} comes from \ft{results} and is complete, so the gaps in the qualifying table (pre-1994 and single-session years) do not affect the rates. Qualifying position is used only to show the difference between grid and qualifying. Both \ft{grid} and qualifying are known before the race starts.
+\\
+\\
+\textbf{Caveat:} Hybrid-era rates rest on at most 22 front-row starts per Grand Prix (two per race, 2014--2024), so neighbouring ranks are within sampling noise. Grands Prix are grouped by event name, which can span more than one circuit layout over the decades.
 
 \begin{figure}[!htbp]
   \centering
@@ -162,7 +169,9 @@ Primary keys of \ft{drivers}, \ft{constructors}, \ft{circuits}, \ft{races}, \ft{
 \end{figure}
 
 \subsection{Q2. Do drivers podium more often at home, after controlling for starting position?}
-\textbf{Method and joins.} \ft{drivers} (nationality mapped to a country) $\bowtie$ \ft{races} $\bowtie$ \ft{circuits} (country) gives the flag \ft{is\_home\_race}, which is then joined with \ft{results} for the outcome. To control for starting position, podium rates are compared \emph{within} grid tiers: front row (P1--2), rows 2--3 (P3--6), midfield (P7--12) and backmarkers (P13+). Pit-lane and non-standard starts (\ft{grid} $=0$) are excluded.
+\textbf{Method and joins:} \ft{drivers} (nationality mapped to a country) $\bowtie$ \ft{races} $\bowtie$ \ft{circuits} (country) gives the flag \ft{is\_home\_race}, which is then joined with \ft{results} for the outcome. To control for starting position, podium rates are compared \emph{within} grid tiers: front row (P1--2), rows 2--3 (P3--6), midfield (P7--12) and backmarkers (P13+). Pit-lane and non-standard starts (\ft{grid} $=0$) are excluded.
+\\
+\\
 
 \textbf{Answer: no.} Within every grid tier, home and away podium rates are close, and the sign of the difference is inconsistent (Figure~\ref{fig:q2}):
 \begin{itemize}
@@ -172,8 +181,10 @@ Primary keys of \ft{drivers}, \ft{constructors}, \ft{circuits}, \ft{races}, \ft{
   \item backmarkers: 1.0\% vs.\ 1.3\%.
 \end{itemize}
 Even without the control, home drivers podium slightly \emph{less} often (11.5\% vs.\ 13.8\%). Starting position, not home soil, explains podium rates.
+\\
+\\
 
-\textbf{Grain, missing data and cutoff.} The grain is one row per driver per race. 2,471 rows have a nationality that could not be mapped to a country; they are treated as ``not home''. Nationality, circuit country and grid are all known before the race starts.
+\textbf{Grain, missing data and cutoff:} The grain is one row per driver per race. 2,471 rows have a nationality that could not be mapped to a country; they are treated as ``not home''. Nationality, circuit country and grid are all known before the race starts.
 
 \begin{figure}[!htbp]
   \centering
@@ -183,18 +194,21 @@ Even without the control, home drivers podium slightly \emph{less} often (11.5\%
 \end{figure}
 
 \subsection{Q3. Which constructors have the highest mechanical-retirement rate in 2014--2021 vs.\ 2022--2024?}
-\textbf{Definition and joins.} \ft{results} (deduplicated) $\bowtie$ \ft{races} (year) $\bowtie$ \ft{constructors} (name) $\bowtie$ \ft{status} (our mapping of the 139 statuses). A mechanical retirement is a race start that ended because a car component failed (engine, gearbox, hydraulics, \ldots). Crashes and collisions, driver errors and regulatory outcomes (disqualification) are excluded. The denominator is race starts only: did-not-start and did-not-qualify entries are removed. Constructors need at least 20 starts in both periods (11 teams).
+\textbf{Definition and joins:} \ft{results} (deduplicated) $\bowtie$ \ft{races} (year) $\bowtie$ \ft{constructors} (name) $\bowtie$ \ft{status} (our mapping of the 139 statuses). A mechanical retirement is a race start that ended because a car component failed (engine, gearbox, hydraulics, \ldots). Crashes and collisions, driver errors and regulatory outcomes (disqualification) are excluded. The denominator is race starts only: did-not-start and did-not-qualify entries are removed. Constructors need at least 20 starts in both periods (11 teams).
+\\
+\\
 
-\textbf{Answer.} Figure~\ref{fig:q3}:
+\textbf{Answer:} Figure~\ref{fig:q3}:
 \begin{itemize}
   \item \textbf{2014--2021:} highest were \textbf{McLaren (14.5\%)}, \textbf{Sauber (11.0\%)} and \textbf{Red Bull (10.7\%)}.
   \item \textbf{2022--2024:} highest were \textbf{Alfa Romeo (12.5\%)}, \textbf{Alpine (11.0\%)} and \textbf{AlphaTauri (6.8\%)}.
   \item Most teams became much more reliable (McLaren 14.5\%$\to$3.7\%, Red Bull 10.7\%$\to$3.7\%). Alfa Romeo (4.2\%$\to$12.5\%) and Alpine (6.8\%$\to$11.0\%) moved the other way. Mercedes stayed low and stable (4.1\%$\to$4.4\%), and the lowest early-hybrid rate was Aston Martin's (2.3\%).
 \end{itemize}
+\textbf{Grain, missing data and cutoff:} The grain is one row per car entry per race. Status is a \emph{post-race} outcome: it is used here only to answer the question and is excluded from the modeling table.
+\\
+\\
 
-\textbf{Grain, missing data and cutoff.} The grain is one row per car entry per race. Status is a \emph{post-race} outcome: it is used here only to answer the question and is excluded from the modeling table.
-
-\textbf{Caveat.} Teams are grouped by constructor name. Renamed organisations therefore appear as separate teams (Sauber/Alfa Romeo, Toro Rosso/AlphaTauri, Renault/Alpine, Force India/Racing Point/Aston Martin). Some teams fail the 20-starts filter, and the ``2014--2021'' figure for Alpine covers only the 2021 season.
+\textbf{Caveat:} Teams are grouped by constructor name. Renamed organisations therefore appear as separate teams (Sauber/Alfa Romeo, Toro Rosso/AlphaTauri, Renault/Alpine, Force India/Racing Point/Aston Martin). Some teams fail the 20-starts filter, and the ``2014--2021'' figure for Alpine covers only the 2021 season.
 
 \begin{figure}[!htbp]
   \centering
@@ -358,12 +372,12 @@ Driver context & \ft{driver\_age}, \ft{is\_home\_race} & 0.673 & $-0.006$\\
 
 %=====================================================================
 \section{Model Explainability (XAI)}
-All three models are explained on the unseen 2022--2024 test set. SHAP and LIME use the full 1950--2018 training set (after the pipeline's own imputer) as their reference, and SHAP values are reported in \textbf{percentage points of P(podium)}. These explanations show what the models \emph{rely on} to predict, not what \emph{causes} a podium finish.
+All three models are explained on the unseen 2022--2024 test set. SHAP and LIME use the full 1950--2018 training set (after the pipeline's own imputer) as their reference. The beeswarm plots show SHAP values in \textbf{percentage points of P(podium)}; the dependence and waterfall plots use each model's own units (log-odds for LR, probability for RF and NN). These explanations show what the models \emph{rely on} to predict, not what \emph{causes} a podium finish.
 
 \subsection{Global: permutation importance}
 Each test feature was shuffled 30 times (the same shuffles for every model) and the drop in PR-AUC was recorded (Figure~\ref{fig:perm}).
 \begin{itemize}
-  \item \ft{grid} gives the largest, statistically reliable drop for every model (0.29 LR, 0.34 RF, about 0.4 NN).
+  \item \ft{grid} gives the largest, statistically reliable drop for every model (0.29 LR, 0.34 RF, 0.3--0.4 NN).
   \item Form features follow, but each model leans on different ones: LR on driver points, the NN on driver points and wins, the RF on win counts. The standings features are strongly correlated ($\rho=0.96$ between driver and constructor points), so they can stand in for each other.
   \item \ft{gap\_to\_pole\_pct}, \ft{driver\_age} and \ft{is\_home\_race} have almost no effect; pace is largely redundant with \ft{grid} ($\rho=0.82$).
 \end{itemize}
@@ -378,9 +392,9 @@ Each test feature was shuffled 30 times (the same shuffles for every model) and 
 \subsection{Global: SHAP}
 \begin{itemize}
   \item \ft{grid} is the top SHAP feature for all three models (Figure~\ref{fig:bee}). A front-row start adds roughly 30--50 points to P(podium); a start at the back removes about 20.
-  \item The dependence plots (Figure~\ref{fig:dep}) show different shapes for the grid effect. LR declines smoothly. The RF learned a step: a flat bonus for P1--P4, a steep drop through P5--P9 and little change behind P10. The NN learned a smooth version of that step.
+  \item The dependence plots (Figure~\ref{fig:dep}) show different shapes for the grid effect. LR is a straight line in log-odds (each grid slot costs the same). The RF learned a step: a flat bonus for P1--P4, a steep drop through P5--P9 and little change behind P10. The NN learned a smooth version of that step.
   \item High \ft{prev\_constructor\_points} pushes LR and NN predictions \emph{down}. This is a collinearity effect, not a team effect: once driver points are known, constructor points mostly add the teammate's points.
-  \item Permutation and SHAP rankings agree strongly for LR (Spearman $\rho=0.93$) and moderately for RF and NN ($\rho\approx0.64$).
+  \item Permutation and SHAP rankings agree strongly for LR (Spearman $\rho=0.93$) and less for RF and NN ($\rho\approx0.55$--$0.64$).
 \end{itemize}
 
 \begin{figure}[!htbp]
@@ -395,7 +409,7 @@ Each test feature was shuffled 30 times (the same shuffles for every model) and 
 \begin{figure}[!htbp]
   \centering
   \includegraphics[width=0.92\textwidth]{c79_2.png}
-  \caption{SHAP dependence of \ft{grid} (top) and \ft{gap\_to\_pole\_pct} (bottom).}
+  \caption{SHAP dependence of \ft{grid} (top) and \ft{gap\_to\_pole\_pct} (bottom); LR in log-odds, RF and NN in probability.}
   \label{fig:dep}
 \end{figure}
 
@@ -406,9 +420,9 @@ Two real test rows were explained:
   \item \textbf{Record B, partially missing:} Sergio Pérez, 2023 Australian GP. He had no qualifying time, started 20th and finished P5.
 \end{itemize}
 
-\textbf{Record A.} All three models predicted a podium (P = 0.62 LR, 0.74 RF, 0.77 NN). \ft{grid}$=17$ lowers every prediction, but his championship form (362 points, 7 wins) outweighs it (e.g.\ +57 points from driver points in LR).
+\textbf{Record A.} All three models predicted a podium (P = 0.62 LR, 0.74 RF, 0.83 NN). \ft{grid}$=17$ lowers every prediction, but his championship form (362 points, 7 wins) outweighs it (e.g.\ +0.18 probability from driver points in the RF).
 
-\textbf{Record B.} The models disagree (0.06 LR vs.\ 0.42 RF and 0.34 NN). \ft{grid}$=20$ is the main negative in all three. The missing qualifying time has only a small net effect, because the imputed value and the missing flag largely cancel.
+\textbf{Record B.} The models disagree (0.06 LR vs.\ 0.42 RF and 0.32 NN). \ft{grid}$=20$ is the main negative in all three. The missing qualifying time has only a small net effect, because the imputed value and the missing flag largely cancel.
 
 \begin{figure}[!htbp]
   \centering
@@ -418,7 +432,7 @@ Two real test rows were explained:
   \begin{subfigure}{0.325\textwidth}\includegraphics[width=\textwidth]{c83_4.png}\end{subfigure}
   \begin{subfigure}{0.325\textwidth}\includegraphics[width=\textwidth]{c83_5.png}\end{subfigure}
   \begin{subfigure}{0.325\textwidth}\includegraphics[width=\textwidth]{c83_6.png}\end{subfigure}
-  \caption{Local SHAP waterfalls (percentage points of P(podium)). Top: record A. Bottom: record B. Columns: LR, RF, NN.}
+  \caption{Local SHAP waterfalls (LR in log-odds, RF and NN in probability). Top: record A. Bottom: record B. Columns: LR, RF, NN.}
   \label{fig:wf}
 \end{figure}
 
@@ -441,7 +455,7 @@ Two real test rows were explained:
   \item \textbf{Form features.} Standings are lagged by one race and reset at round 1, so early-season rows carry little form information. Rows without a standings entry are filled with 0.
   \item \textbf{Neural-network variability.} Retraining the network gives slightly different scores (test PR-AUC about 0.65--0.68 across our runs), so its ranking against the random forest is not stable.
   \item \textbf{Data-engineering questions.} Grands Prix and constructors are grouped by name, so renamed teams and changed circuit layouts are split or merged. Hybrid-era circuit rates rest on few starts.
-  \item \textbf{Explanations.} SHAP and LIME depend on the chosen reference population, and correlated features make single-feature attributions unstable. None of the explanations are causal.
+  \item \textbf{Explanations.} SHAP and LIME depend on the chosen reference population, and correlated features make single-feature attributions unstable.
 \end{itemize}
 
 \end{document}
