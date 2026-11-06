@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474" # Web interface
+      - "7687:7687" # Bolt port for your Python script
+    environment:
+      - NEO4J_AUTH=neo4j/guc_f1_graph_2026
